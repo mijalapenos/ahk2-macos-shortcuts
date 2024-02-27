@@ -1,3 +1,3 @@
 # akh2-macos-shortcuts
 
-Making working on Windows more managable
+Making working on Windows more bearable
