@@ -50,7 +50,7 @@ Ctrl & Tab::AltTab
 }
 ^Down:: {
     if WinActive("ahk_exe explorer.exe") {
-        Send("{Enter}") ; Move up a folder in File Explorer
+        Send("{Enter}") ; Move down a folder in File Explorer
     }
     else {
         Suspend(true)
@@ -107,13 +107,13 @@ Ctrl & Tab::AltTab
     Suspend(false)
     return
 }
-+#^Left:: {  ; Move window to next monitor
+^#!Left:: {  ; Move window to next monitor
     Suspend(true)
     Send("#+{Left}")
     Suspend(false)
     return
 }
-+#^Right:: {  ; Move window to next monitor (other way)
+^#!Right:: {  ; Move window to next monitor (other way)
     Suspend(true)
     Send("#+{Right}")
     Suspend(false)
