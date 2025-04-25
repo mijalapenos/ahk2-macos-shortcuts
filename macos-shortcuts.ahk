@@ -45,8 +45,8 @@ Ctrl & Tab::AltTab
         Suspend(true)
         Send("^{Home}")
         Suspend(false)
-        return
     }
+    return
 }
 ^Down:: {
     if WinActive("ahk_exe explorer.exe") {
@@ -56,9 +56,19 @@ Ctrl & Tab::AltTab
         Suspend(true)
         Send("^{End}")
         Suspend(false)
-        return
     }
+    return
 }
+;Enter:: {
+;    focusedControl := ControlGetFocus("A")
+;    if WinActive("ahk_exe explorer.exe") && (focusedControl != "Edit1") {
+;        Send("{F2}") ; Rename file/folder in File Explorer
+;    }
+;    else {
+;        Send("{Enter}")
+;    }
+;    return
+;}
 +^Left:: {
     Suspend(true)
     Send("+{Home}")
@@ -169,16 +179,22 @@ Ctrl & Tab::AltTab
     return
 }
 
+^!§:: {
+    Suspend(true)
+    SendText("'")
+    Suspend(false)
+    return
+}
+
+!Space::Send("^+{Space}")
+
 ; CMD + ; = switch windows of the same application
-GroupAdd("explorer_exe", "ahk_class CabinetWClass ahk_exe explorer.exe",, "Program Manager")  ; mitigates the issue that Taskbar and Desktop have the same process name as File Explorer
+GroupAdd("explorer_exe", "ahk_class CabinetWClass ahk_exe explorer.exe",, "Program Manager")  ; adds all CabinetWClass (= File Explorer) windows to a group explorer_exe to mitigate being in the same process as taskbar and desktop
 ^;:: {
     static winGP := Map("explorer.exe", GroupActivate.Bind("explorer_exe"))
     if !winGP.Has(pName := WinGetProcessName("A"))
-        GroupAdd(gName  := StrReplace(pName, ".", "_"), "ahk_exe" pName),
+        gName := StrReplace(StrReplace(StrReplace(pName, ".", "_"), "-", "_"), " ", "_"),  ; replace dot, dash and space chars with underscore
+        GroupAdd(gName, "ahk_exe " pName),
         winGP[pName] := GroupActivate.Bind(gName)
     winGP[pName]()
 }
-
-; ====================== TODO ======================
-; Ctrl + Alt + Cmd + arrow = Send to another display
-; Alt + Cmd + arrow = Snap to right/left
